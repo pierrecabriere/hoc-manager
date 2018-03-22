@@ -1,7 +1,7 @@
 {
   "name": "hoc-manager",
   "version": "1.0.0",
-  "description": "",
+  "description": "Simple and flexible way to create and manage High-Order Components",
   "main": "hoc-manager.js",
   "scripts": {
     "build": "babel ./src -d ./",
