@@ -1,27 +1,26 @@
 class HOCManager {
-  // Gets the display name of a JSX component for dev tools
-  static getComponentDisplayName(Component) {
+  getComponentDisplayName = (Component) => {
     return Component.displayName || Component.name || 'Unknown';
   }
 
-  static create(getComponent) {
-    return function (...configs) {
-      if ('function' === typeof configs[0]) {
-        const ComposedComponent = configs[0];
+  getOpts = opts => {
+    return Object.assign({
+      acceptParameters: false,
+    }, opts);
+  }
+
+  create = (getComponent, opts) => {
+    opts = this.getOpts(opts);
+
+    return function (...parameters) {
+      if (!opts.acceptParameters) {
+        const ComposedComponent = parameters[0];
         return getComponent(ComposedComponent, {});
       }
 
-      configs.forEach((config, index) => {
-        if ('object' !== typeof config) {
-          configs[index] = { default: config };
-        }
-      });
-
-      const opts = Object.assign({}, ...configs);
-
-      return ComposedComponent => getComponent(ComposedComponent, opts, configs);
+      return ComposedComponent => getComponent(ComposedComponent, parameters);
     }
   }
 }
 
-export default HOCManager;
+export default new HOCManager();
